@@ -7,6 +7,10 @@ app.use(express.json());
 
 const ytDlpWrap = new YTDlpWrap();
 
+app.get("/", (req, res) => {
+    res.send("Server is running");
+});
+
 app.post("/audioStream", async (req, res) => {
     try {
         const { url } = req.body;
