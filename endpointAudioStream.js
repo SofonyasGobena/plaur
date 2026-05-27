@@ -7,8 +7,27 @@ app.use(express.json());
 
 const ytDlpWrap = new YTDlpWrap();
 
+//local binary
+const { exec } = require("child_process");
+const YT_DLP = "./yt-dlp";
+
+
 app.get("/", (req, res) => {
     res.send("Server is running");
+});
+
+app.post("/audio", (req, res) => {
+    const { url } = req.body;
+
+    exec(`${YT_DLP} -f bestaudio -g "${url}"`, (err, stdout, stderr) => {
+        if (err) {
+            return res.status(500).json({ error: stderr });
+        }
+
+        res.json({
+            streamUrl: stdout.trim()
+        });
+    });
 });
 
 app.post("/audioStream", async (req, res) => {
@@ -60,6 +79,8 @@ app.post("/audioStream", async (req, res) => {
         });
     }
 });
+
+
 
 const PORT = process.env.PORT || 3000;
 
