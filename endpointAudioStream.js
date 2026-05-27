@@ -7,7 +7,7 @@ app.use(express.json());
 
 const ytDlpWrap = new YTDlpWrap();
 
-app.post("/audio", async (req, res) => {
+app.post("/audioStream", async (req, res) => {
     try {
         const { url } = req.body;
 
@@ -52,6 +52,8 @@ app.post("/audio", async (req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on ${PORT}`);
 });
